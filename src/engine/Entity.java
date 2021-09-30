@@ -13,10 +13,9 @@ public abstract class Entity {
 		this.vertices = vertices;
 		
 		int[] x = new int[vertices.length], y = new int[vertices.length];
-		
 		for(int i = 0; i < vertices.length; ++i) {
-			x[i] = (int)vertices[i].x_component;
-			y[i] = (int)vertices[i].y_component;
+			x[i] = (int)Math.round(vertices[i].x_component);
+			y[i] = (int)Math.round(vertices[i].y_component);
 		}
 		outline = new Polygon(x, y, x.length);
 		
@@ -44,8 +43,19 @@ public abstract class Entity {
 		vertices[n].x_component = x;
 		vertices[n].y_component = y;
 		
-		outline.xpoints[n] = (int)x;
-		outline.ypoints[n] = (int)y;
+		outline.xpoints[n] = (int)Math.round(x);
+		outline.ypoints[n] = (int)Math.round(y);
+	}
+	
+	protected void translate(float dx, float dy) {
+		for(int i = 0; i < vertices.length; ++i)
+		{
+			Vector2D vertex = vertices[i];
+			vertex.x_component += dx;
+			vertex.y_component += dy;
+			outline.xpoints[i] = (int)Math.round(vertex.x_component);
+			outline.ypoints[i] = (int)Math.round(vertex.y_component);
+		}
 	}
 	
 	/**

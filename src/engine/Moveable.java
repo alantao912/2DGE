@@ -19,13 +19,25 @@ public abstract class Moveable extends Entity {
 
 	@Override
 	public void update(float tickRate) {
+		float dx =  (float) (x_velocity * tickRate + 0.5 * x_acceleration * tickRate * tickRate);
+		float dy =  (float) (y_velocity * tickRate + 0.5 * y_acceleration * tickRate * tickRate);
+		super.translate(dx, dy);
 		
-		for(int i = 0; i < super.outline().npoints; ++i) {
-			float x1 = (float)(getX(i) + x_velocity * tickRate + 0.5 * x_acceleration * tickRate * tickRate);
-			float y1 = (float)(getY(i) + y_velocity * tickRate + 0.5 * y_acceleration * tickRate * tickRate);
-			setVertex(x1, y1,i);
+		if(this instanceof Collidable) {
+			
+			/*
+			 * 	Checks if this polygon is colliding with any other polygons
+			 *  Invokes the collide method of this polygon and the other if they are colliding.
+			 */
+			
+			Collidable c0 = Collidable.collidingAny((Collidable)this);
+			if(c0 != null) {
+				Collidable c1 = (Collidable)this;
+				float mass = c0.mass, x_velocity = c0.x_velocity, y_velocity = c0.y_velocity;
+				c0.collide(c1.mass, c1.x_velocity, c1.y_velocity);
+				c1.collide(mass, x_velocity, y_velocity);
+			}
 		}
-		
 		x_velocity += tickRate * x_acceleration;
 		y_velocity += tickRate * y_acceleration;
 	}

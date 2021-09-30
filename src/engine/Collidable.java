@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public abstract class Collidable extends Moveable {
+	
+	protected static ArrayList<Collidable> collidables;
 
 	protected float mass;
 	
@@ -12,6 +14,37 @@ public abstract class Collidable extends Moveable {
 		super(vertices);
 		mass = m;
 	}
+	
+	/**
+	 * 
+	 * Checks whether or not an object is colliding with any other collidable object.
+	 * 
+	 * @param <T> Any object which belongs to the collidable superclass
+	 * @param Object to be checked
+	 * @return The object that the input is colliding with. Null if not colliding with any other object.
+	 */
+	
+	public static <T extends Collidable> Collidable collidingAny(T object) {
+		Collidable e = null;
+		for(int i = 0; i < collidables.size(); ++i) {
+			Collidable other = collidables.get(i);
+			if(other != object && isColliding(object, other, -1)) {
+				e = other;
+				break;
+			}
+		}
+		return e;
+	}
+	
+	/**
+	 * Checks whether or not two objects are colliding
+	 * 
+	 * @param <T>
+	 * @param object1 First polygon to be checked
+	 * @param object2 Second polygon to be checked
+	 * @param maxDist Optimizing parameter, if the distance between the two objects is greater than the maximum distance, they cannot possibly be colliding
+	 * @return true of object1 and object2 overlap, false otherwise.
+	 */
 	
 	public static <T extends Collidable> boolean isColliding(T object1, T object2, double maxDist) {
 		if(maxDist == -1)
@@ -25,6 +58,7 @@ public abstract class Collidable extends Moveable {
 	}
 	
 	/**
+	 * Separating Axis Theorem to check polygon overlap
 	 * 
 	 * @param poly1 The first polygon to check
 	 * @param poly2 The second polygon to check

@@ -9,11 +9,6 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import test.Barrier;
-import test.Car;
-import test.Sun;
-import test.Target;
-
 public class Game extends JFrame implements ActionListener, KeyListener {
 	
 	/**
@@ -89,13 +84,7 @@ public class Game extends JFrame implements ActionListener, KeyListener {
 	}
 	
 	public static void main(String[] args) {
-		Game game = new Game();
-		game.setSize(300, 300);
-		game.addEntity(new Barrier());
-		game.addEntity(new Car());
-		game.addEntity(new Sun());
-		game.addEntity(new Target());
-		game.setVisible(true);
+		System.out.println("HelloWorld");
 	}
 	
 }
